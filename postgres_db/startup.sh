@@ -142,6 +142,12 @@ export POSTGRES_DB="${DB_NAME}"
 export POSTGRES_PORT="${DB_PORT}"
 EOF
 
+# Idempotent application schema + seed initialization.
+# This is safe to re-run on every container start.
+echo "Running application schema initialization + seed..."
+chmod +x ./init_schema_and_seed.sh 2>/dev/null || true
+./init_schema_and_seed.sh
+
 echo "PostgreSQL setup complete!"
 echo "Database: ${DB_NAME}"
 echo "User: ${DB_USER}"
